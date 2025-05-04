@@ -13,19 +13,19 @@ async def get_irrigation_recommendation(
     crop_name: str,
     latitude: float,
     longitude: float,
-    date: Optional[date] = None
+    target_date: Optional[date] = None
 ):
     """Get daily irrigation recommendation for a field"""
     try:
-        if not date:
-            date = date.today()
+        if not target_date:
+            target_date = date.today()
 
         # Fetch weather data
         location = {"latitude": latitude, "longitude": longitude}
-        weather = await weather_service.get_weather_data(location, date)
+        weather = await weather_service.get_weather_data(location, target_date)
 
-        # Mocked logic for irrigation (replace with Gemini API or rule-based system)
-        water_amount = 5.0  # Liters per square meter (example)
+        # Mocked logic for irrigation
+        water_amount = 5.0
         recommendation = "Water normally"
         if weather["precipitation"] > 2.0:
             recommendation = "Do not water today"
@@ -36,7 +36,7 @@ async def get_irrigation_recommendation(
 
         return IrrigationRecommendation(
             field_id=field_id,
-            date=date,
+            date=target_date,
             crop_name=crop_name,
             water_amount_liters=water_amount,
             recommendation=recommendation
